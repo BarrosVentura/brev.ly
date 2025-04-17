@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 
-export const deleteLink: FastifyPluginAsyncZod = async (server) => {
+export const deleteLinkRoute: FastifyPluginAsyncZod = async (server) => {
   server.delete(
     "/links",
     {

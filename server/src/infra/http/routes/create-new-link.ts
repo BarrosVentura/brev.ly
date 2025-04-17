@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 
-export const createNewLink: FastifyPluginAsyncZod = async (server) => {
+export const createNewLinkRoute: FastifyPluginAsyncZod = async (server) => {
   server.post(
     "/links",
     {
@@ -13,7 +13,7 @@ export const createNewLink: FastifyPluginAsyncZod = async (server) => {
           shortLink: z.string(),
         },
         response: {
-          200: z.object({
+          201: z.object({
             id: z.string(),
             original_url: z.string(),
             short_url: z.string(),
@@ -24,7 +24,7 @@ export const createNewLink: FastifyPluginAsyncZod = async (server) => {
       },
     },
     async (request, reply) => {
-      return reply.status(200).send({
+      return reply.status(201).send({
         id: "1",
         original_url: "teste",
         short_url: "teste",

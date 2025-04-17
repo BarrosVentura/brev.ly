@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 
-export const downloadCSVLinks: FastifyPluginAsyncZod = async (server) => {
+export const downloadCSVLinksRoute: FastifyPluginAsyncZod = async (server) => {
   server.post(
     "/links/exports",
     {
