@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --default-font-family: "Open Sans", sans-serif;
+  --font-open: "Open Sans", sans-serif;
+
+  --color-blue-base: #2c46b1;
+  --color-blue-dark: #2c4091;
+
+  --color-white: #ffffff;
+  --color-gray-100: #f9f9fb;
+  --color-gray-200: #e4e6ec;
+  --color-gray-300: #cdcfd5;
+  --color-gray-400: #74798b;
+  --color-gray-500: #4d505c;
+  --color-gray-600: #1f2025;
+  --color-gray-700: #121214;
+
+  --color-danger: #b12c4d;
+
+  --text-xl: 24px;
+  --text-xl--line-height: 32px;
+  --text-xl--font-weight: 700;
+  --text-xl--font-family: var(--font-open);
+  --text-xl--color: var(--color-gray-700);
+
+  --text-lg: 18px;
+  --text-lg--line-height: 24px;
+  --text-lg--font-weight: 700;
+  --text-lg--color: var(--color-gray-700);
+
+  --text-md: 14px;
+  --text-md--line-height: 18px;
+  --text-md--font-weight: 600;
+  --text-md--color: var(--color-gray-700);
+
+  --text-sm: 12px;
+  --text-sm--line-height: 16px;
+  --text-sm--font-weight: 400; /* Regular */
+  --text-sm--color: var(--color-gray-700);
+
+  --text-sm-semi: 12px;
+  --text-sm-semi--line-height: 16px;
+  --text-sm-semi--color: var(--color-gray-700);
+  --text-sm-semi--font-weight: 600; /* SemiBold */
+
+  --text-xs: 10px;
+  --text-xs--line-height: 14px;
+  --text-xs--font-weight: 400; /* Regular */
+  --text-xs--color: var(--color-gray-700);
+  --text-xs--text-transform: uppercase;
+}
+
+body {
+  height: 100dvh;
+  background-color: var(--color-gray-200);
+}
+
+#root {
+  height: 100%;
+}
