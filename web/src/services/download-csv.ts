@@ -1,5 +1,5 @@
-import { api } from '@/lib/axios'
+import { api } from "@/lib/axios";
 
 export function downloadCsv() {
-	return api.get('/csv')
+  return api.post<{ reportUrl: string }>("/links/exports");
 }
