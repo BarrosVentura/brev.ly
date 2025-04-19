@@ -1,9 +1,10 @@
 import fastifyCors from "@fastify/cors";
 import { fastifySwagger } from "@fastify/swagger";
 import { fastifySwaggerUi } from "@fastify/swagger-ui";
-import fastify from "fastify";
+import { fastify } from "fastify";
 
 import {
+  jsonSchemaTransform,
   hasZodFastifySchemaValidationErrors,
   serializerCompiler,
   validatorCompiler,
@@ -31,7 +32,7 @@ server.setErrorHandler((error, request, reply) => {
   return reply.status(500).send({ message: "Internal server error" });
 });
 
-server.register(fastifyCors);
+server.register(fastifyCors, { origin: "*" });
 
 server.register(fastifySwagger, {
   openapi: {
@@ -40,6 +41,7 @@ server.register(fastifySwagger, {
       version: "1.0.0",
     },
   },
+  transform: jsonSchemaTransform,
 });
 
 server.register(fastifySwaggerUi, {

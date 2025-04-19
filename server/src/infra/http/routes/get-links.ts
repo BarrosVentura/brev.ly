@@ -1,3 +1,4 @@
+import { getLinks } from "@/app/functions/get-links";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 
@@ -24,16 +25,18 @@ export const getLinksRoute: FastifyPluginAsyncZod = async (server) => {
       },
     },
     async (request, reply) => {
+      const result = await getLinks();
+
+      const links = result.map((link) => ({
+        id: link.id,
+        complete_url: link.originalLink,
+        short_url: link.shortLink,
+        total_clicks: link.totalClicks,
+        created_at: link.createdAt,
+      }));
+
       return reply.status(200).send({
-        links: [
-          {
-            complete_url: "teste",
-            created_at: new Date(),
-            id: "1",
-            short_url: "teste",
-            total_clicks: 0,
-          },
-        ],
+        links,
       });
     }
   );
