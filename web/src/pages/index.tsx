@@ -1,12 +1,11 @@
 import { BrevlyLink } from "@/components/brevly-link";
-import { Button } from "@/components/button";
+import { DownloadCSVButton } from "@/components/download-csv-button";
 import { EmptyState } from "@/components/empty-state";
 import { InputForm } from "@/components/input-form";
 import { LoadingState } from "@/components/loading-state";
 import { MainLayout } from "@/layout/main";
 import { getLinks } from "@/services/get-links";
 import Logo from "@assets/logo.svg?react";
-import { DownloadSimple } from "@phosphor-icons/react";
 import { useQuery } from "@tanstack/react-query";
 
 export function Home() {
@@ -26,12 +25,7 @@ export function Home() {
       <aside className="flex flex-col lg:col-span-6 bg-white p-8 rounded-lg max-h-[1000px]">
         <div className="border-b border-gray-200 pb-5 flex justify-between">
           <h2 className="text-lg">Meus links</h2>
-          <Button
-            label="Baixar CSV"
-            onClick={() => console.log("opa")}
-            type="secondary"
-            icon={<DownloadSimple />}
-          />
+          <DownloadCSVButton />
         </div>
 
         {isLoading && <LoadingState />}
