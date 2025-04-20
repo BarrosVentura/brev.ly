@@ -14,6 +14,7 @@ import { deleteLinkRoute } from "@/infra/http/routes/delete-link";
 import { downloadCSVLinksRoute } from "@/infra/http/routes/download-csv-links";
 import { getLinksRoute } from "@/infra/http/routes/get-links";
 import { getLinkRoute } from "./infra/http/routes/get-link";
+import { exportLinksRoute } from "./infra/http/routes/export-links";
 
 const server = fastify();
 
@@ -49,6 +50,7 @@ server.register(fastifySwaggerUi, {
   routePrefix: "/docs",
 });
 
+server.register(exportLinksRoute);
 server.register(createNewLinkRoute);
 server.register(deleteLinkRoute);
 server.register(downloadCSVLinksRoute);
