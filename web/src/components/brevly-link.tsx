@@ -4,6 +4,7 @@ import { Copy, Trash } from "@phosphor-icons/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router";
 import { IconButton } from "./icon-button";
+import { toast } from "react-toastify";
 
 export function BrevlyLink({
   shortUrl,
@@ -27,6 +28,10 @@ export function BrevlyLink({
     },
   });
 
+  function notify() {
+    toast("Link copiado!");
+  }
+
   return (
     <li className="flex justify-between py-5 not-last:border-b not-last:border-gray-200">
       <div>
@@ -41,7 +46,10 @@ export function BrevlyLink({
           <IconButton
             icon={<Copy size={16} />}
             alt="copiar"
-            onClick={() => navigator.clipboard.writeText(shortUrl)}
+            onClick={() => {
+              notify();
+              navigator.clipboard.writeText(shortUrl);
+            }}
           />
           <IconButton
             icon={<Trash size={16} />}

@@ -9,6 +9,7 @@ import { Home } from "./pages/index.tsx";
 import { Redirect } from "./pages/redirect.tsx";
 import { ErrorBoundary } from "react-error-boundary";
 import { FallbackRender } from "./components/fallback-error-boundary.tsx";
+import { ToastContainer } from "react-toastify";
 
 async function enableMocking() {
   // if (import.meta.env.MODE === 'development') {
@@ -36,6 +37,7 @@ enableMocking().then(() => {
           </BrowserRouter>
         </ErrorBoundary>
 
+        <ToastContainer />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </StrictMode>
