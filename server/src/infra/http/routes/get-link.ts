@@ -30,7 +30,9 @@ export const getLinkRoute: FastifyPluginAsyncZod = async (server) => {
     async (request, reply) => {
       const { short_url } = request.params;
 
-      const result = await getLink({ short_url });
+      const decoded = decodeURIComponent(short_url);
+
+      const result = await getLink({ short_url: decoded });
 
       if (isRight(result)) {
         const link = {

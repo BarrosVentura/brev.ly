@@ -25,9 +25,5 @@ export async function getLinks(): Promise<
     })
     .from(schema.links);
 
-  if (result.length === 0) {
-    return makeLeft(new GenericError("Não existe URLs cadastradas"));
-  }
-
   return makeRight(result);
 }

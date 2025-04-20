@@ -1,14 +1,8 @@
-import { api } from '@/lib/axios'
-
-type Link = {
-	original_link: string
-	short_link: string
-	created_at: string
-	updated_at: string
-	id: string
-	total_clicks: number
-}
+import { Link } from "@/DTO/link";
+import { api } from "@/lib/axios";
 
 export function getLinks() {
-	return api.get<Link[]>('/links')
+  return api.get<{
+    links: Link[];
+  }>("/links");
 }
