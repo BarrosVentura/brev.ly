@@ -13,6 +13,7 @@ import { createNewLinkRoute } from "@/infra/http/routes/create-new-link";
 import { deleteLinkRoute } from "@/infra/http/routes/delete-link";
 import { downloadCSVLinksRoute } from "@/infra/http/routes/download-csv-links";
 import { getLinksRoute } from "@/infra/http/routes/get-links";
+import { getLinkRoute } from "./infra/http/routes/get-link";
 
 const server = fastify();
 
@@ -52,6 +53,7 @@ server.register(createNewLinkRoute);
 server.register(deleteLinkRoute);
 server.register(downloadCSVLinksRoute);
 server.register(getLinksRoute);
+server.register(getLinkRoute);
 
 server.listen({ port: 3333, host: "0.0.0.0" }).then(() => {
   console.log("Server is running on http://localhost:3333");
