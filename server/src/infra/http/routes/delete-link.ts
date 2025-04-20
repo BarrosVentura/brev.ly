@@ -1,5 +1,6 @@
 import { deleteLink } from "@/app/functions/delete-link";
 import { GenericError } from "@/app/functions/errors/generic-error";
+import { isRight, unwrapEither } from "@/infra/shared/either";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 
@@ -24,21 +25,19 @@ export const deleteLinkRoute: FastifyPluginAsyncZod = async (server) => {
     async (request, reply) => {
       const { id } = request.params;
 
-      try {
-        await deleteLink({ link_id: id });
+      const result = await deleteLink({ link_id: id });
 
+      if (isRight(result)) {
         return reply.status(200).send();
-      } catch (error) {
-        if (
-          error instanceof GenericError &&
-          error.message === "Link not found"
-        ) {
+      }
+
+      const error = unwrapEither(result);
+
+      switch (error.constructor.name) {
+        case "GenericError":
           return reply.status(404).send({
             message: "Elemento não existe",
           });
-        }
-
-        throw error;
       }
     }
   );

@@ -3,6 +3,7 @@ import { schema } from "@/infra/db/schemas";
 import { eq, ilike } from "drizzle-orm";
 import { z } from "zod";
 import { GenericError } from "./errors/generic-error";
+import { Either, makeLeft, makeRight } from "@/infra/shared/either";
 
 const deleteLinkInput = z.object({
   link_id: z.string().uuid(),
@@ -10,7 +11,9 @@ const deleteLinkInput = z.object({
 
 type DeleteLinkInput = z.input<typeof deleteLinkInput>;
 
-export async function deleteLink(input: DeleteLinkInput) {
+export async function deleteLink(
+  input: DeleteLinkInput
+): Promise<Either<GenericError, { message: string }>> {
   const { link_id } = deleteLinkInput.parse(input);
   const table = schema.links;
 
@@ -20,6 +23,8 @@ export async function deleteLink(input: DeleteLinkInput) {
     .returning();
 
   if (result.length === 0) {
-    throw new GenericError("Link not found");
+    return makeLeft(new GenericError("Link not found"));
   }
+
+  return makeRight({ message: "Link deletado" });
 }
