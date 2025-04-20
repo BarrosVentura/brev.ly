@@ -35,6 +35,7 @@ export function DownloadCSVButton() {
       label="Baixar CSV"
       onClick={() => handleClick()}
       type="secondary"
+      disabled={isLoading}
       icon={
         isLoading ? (
           <CircleDashed className="animate-spin" />
