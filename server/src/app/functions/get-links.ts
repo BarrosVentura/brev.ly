@@ -1,7 +1,20 @@
 import { db } from "@/infra/db";
 import { schema } from "@/infra/db/schemas";
+import { Either, makeLeft, makeRight } from "@/infra/shared/either";
+import { GenericError } from "./errors/generic-error";
 
-export async function getLinks() {
+export async function getLinks(): Promise<
+  Either<
+    GenericError,
+    Array<{
+      id: string;
+      originalLink: string;
+      shortLink: string;
+      createdAt: Date;
+      totalClicks: number;
+    }>
+  >
+> {
   const result = await db
     .select({
       id: schema.links.id,
@@ -12,5 +25,9 @@ export async function getLinks() {
     })
     .from(schema.links);
 
-  return result;
+  if (result.length === 0) {
+    return makeLeft(new GenericError("Não existe URLs cadastradas"));
+  }
+
+  return makeRight(result);
 }

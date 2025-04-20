@@ -1,4 +1,5 @@
 import { getLinks } from "@/app/functions/get-links";
+import { isRight, unwrapEither } from "@/infra/shared/either";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 
@@ -21,23 +22,37 @@ export const getLinksRoute: FastifyPluginAsyncZod = async (server) => {
               })
             ),
           }),
+          404: z.object({
+            message: z.string(),
+          }),
         },
       },
     },
     async (request, reply) => {
       const result = await getLinks();
 
-      const links = result.map((link) => ({
-        id: link.id,
-        complete_url: link.originalLink,
-        short_url: link.shortLink,
-        total_clicks: link.totalClicks,
-        created_at: link.createdAt,
-      }));
+      if (isRight(result)) {
+        const links = result.right.map((link) => ({
+          id: link.id,
+          complete_url: link.originalLink,
+          short_url: link.shortLink,
+          total_clicks: link.totalClicks,
+          created_at: link.createdAt,
+        }));
 
-      return reply.status(200).send({
-        links,
-      });
+        return reply.status(200).send({
+          links,
+        });
+      }
+
+      const error = unwrapEither(result);
+
+      switch (error.constructor.name) {
+        case "GenericError":
+          return reply.status(404).send({
+            message: error.message,
+          });
+      }
     }
   );
 };

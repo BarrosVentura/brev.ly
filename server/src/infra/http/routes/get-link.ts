@@ -1,4 +1,5 @@
 import { getLink } from "@/app/functions/get-link";
+import { isRight, unwrapEither } from "@/infra/shared/either";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 
@@ -20,6 +21,9 @@ export const getLinkRoute: FastifyPluginAsyncZod = async (server) => {
             total_clicks: z.number(),
             created_at: z.date(),
           }),
+          404: z.object({
+            message: z.string(),
+          }),
         },
       },
     },
@@ -28,15 +32,26 @@ export const getLinkRoute: FastifyPluginAsyncZod = async (server) => {
 
       const result = await getLink({ short_url });
 
-      const link = {
-        id: result.id,
-        complete_url: result.originalUrl,
-        short_url: result.shortUrl,
-        total_clicks: result.totalClicks,
-        created_at: result.createdAt,
-      };
+      if (isRight(result)) {
+        const link = {
+          id: result.right.id,
+          complete_url: result.right.originalUrl,
+          short_url: result.right.shortUrl,
+          total_clicks: result.right.totalClicks,
+          created_at: result.right.createdAt,
+        };
 
-      return reply.status(200).send(link);
+        return reply.status(200).send(link);
+      }
+
+      const error = unwrapEither(result);
+
+      switch (error.constructor.name) {
+        case "GenericError":
+          return reply.status(404).send({
+            message: error.message,
+          });
+      }
     }
   );
 };
