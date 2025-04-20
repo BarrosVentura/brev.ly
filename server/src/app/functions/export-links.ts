@@ -1,11 +1,19 @@
 import { db, pg } from "@/infra/db";
 import { schema } from "@/infra/db/schemas";
+import { Either, makeRight } from "@/infra/shared/either";
 import { uploadFileToStorage } from "@/infra/storage/upload-file-to-storage";
 import { stringify } from "csv-stringify";
 import { PassThrough, Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
 
-export async function exportLinks() {
+export async function exportLinks(): Promise<
+  Either<
+    never,
+    {
+      exportedUrl: string;
+    }
+  >
+> {
   const { sql, params } = db
     .select({
       original_url: schema.links.originalUrl,
@@ -22,8 +30,8 @@ export async function exportLinks() {
     delimiter: ",",
     header: true,
     columns: [
-      { key: "original_url", header: "Original" },
       { key: "short_url", header: "Shortened" },
+      { key: "original_url", header: "Original" },
       { key: "total_clicks", header: "Total clicks" },
       { key: "created_at", header: "Created at" },
     ],
@@ -56,5 +64,7 @@ export async function exportLinks() {
 
   const [{ url }] = await Promise.all([uploadToStorage, convertToCSVPipeline]);
 
-  return { url };
+  return makeRight({
+    exportedUrl: url,
+  });
 }

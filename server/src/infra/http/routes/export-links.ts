@@ -1,4 +1,5 @@
 import { exportLinks } from "@/app/functions/export-links";
+import { isRight } from "@/infra/shared/either";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { z } from "zod";
 
@@ -11,7 +12,6 @@ export const exportLinksRoute: FastifyPluginAsyncZod = async (server) => {
         tags: ["links"],
         response: {
           200: z.object({
-            description: z.string(),
             exportUrl: z.string(),
           }),
           500: z.object({
@@ -21,14 +21,17 @@ export const exportLinksRoute: FastifyPluginAsyncZod = async (server) => {
       },
     },
     async (request, reply) => {
-      try {
-        // Chama a função exportLinks e conecta o pipeline ao reply
-        const result = await exportLinks();
-        return reply.status(200).send();
-      } catch (error) {
-        console.error("Erro ao exportar links:", error);
-        return reply.status(500).send({ message: "Erro ao exportar links" });
+      const result = await exportLinks();
+
+      if (isRight(result)) {
+        return reply.status(200).send({
+          exportUrl: result.right.exportedUrl,
+        });
       }
+
+      return reply.status(500).send({
+        message: "Erro ao exportar links",
+      });
     }
   );
 };

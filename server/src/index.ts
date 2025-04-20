@@ -11,7 +11,6 @@ import {
 } from "fastify-type-provider-zod";
 import { createNewLinkRoute } from "@/infra/http/routes/create-new-link";
 import { deleteLinkRoute } from "@/infra/http/routes/delete-link";
-import { downloadCSVLinksRoute } from "@/infra/http/routes/download-csv-links";
 import { getLinksRoute } from "@/infra/http/routes/get-links";
 import { getLinkRoute } from "./infra/http/routes/get-link";
 import { exportLinksRoute } from "./infra/http/routes/export-links";
@@ -53,7 +52,6 @@ server.register(fastifySwaggerUi, {
 server.register(exportLinksRoute);
 server.register(createNewLinkRoute);
 server.register(deleteLinkRoute);
-server.register(downloadCSVLinksRoute);
 server.register(getLinksRoute);
 server.register(getLinkRoute);
 
