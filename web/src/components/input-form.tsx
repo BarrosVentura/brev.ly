@@ -20,6 +20,7 @@ export function InputForm() {
     handleSubmit,
     formState: { errors, disabled },
     register,
+    reset,
   } = useForm({
     resolver: zodResolver(newLinkSchema),
   });
@@ -37,6 +38,10 @@ export function InputForm() {
     mutationKey: ["createLink"],
     onSuccess: () => {
       currentQueryClient.invalidateQueries({ queryKey: ["links"] });
+      reset({
+        originalLink: "",
+        shortLink: "",
+      });
     },
     onError() {
       notify();
@@ -62,7 +67,7 @@ export function InputForm() {
       <h1 className="text-lg pb-2">Novo Link</h1>
       <Input
         label="Link original"
-        placeholder="www.exemplo.com.br"
+        placeholder="http://exemplo.com.br"
         error={errors.originalLink?.message}
         {...register("originalLink")}
       />

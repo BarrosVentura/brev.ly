@@ -23,7 +23,6 @@ export function BrevlyLink({
     mutationFn: deleteLink,
     mutationKey: ["deleteLink"],
     onSuccess: () => {
-      console.log("cai aqui");
       currentQueryClient.invalidateQueries({ queryKey: ["links"] });
     },
   });
